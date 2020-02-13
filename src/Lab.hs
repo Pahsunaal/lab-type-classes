@@ -23,10 +23,19 @@ class Semigroup a where
     (<>) :: a -> a -> a 
 
 instance Semigroup Int where 
-    (<>) = undefined 
+    (<>) = (+) 
+
+-- instance Semigroup Int where 
+--     (<>) = (*) 
+
+-- instance Semigroup Int where 
+--     (<>) = max
+
+-- instance Semigroup Int where 
+--     (<>) = min
 
 instance Semigroup [a] where 
-    (<>) = undefined 
+    (<>) = (++) 
 
 --------------------------------------------------------------------------------
 -- Monoids
@@ -40,20 +49,46 @@ instance Semigroup [a] where
 class Semigroup a => Monoid a where
     mempty  :: a
     mconcat :: [a] -> a
-    mconcat = undefined
+    mconcat = foldr (<>) mempty
 
 instance Monoid Int where
-    mempty  = undefined
+    mempty  = 0
+
+-- instance Monoid Int where
+--     mempty  = 1
+
+-- instance Monoid Int where
+--     mempty  = minBound
+
+-- instance Monoid Int where
+--     mempty  = maxBound
 
 instance Monoid [a] where
-    mempty  = undefined
+    mempty  = []
 
 --------------------------------------------------------------------------------
 
 instance Semigroup b => Semigroup (a -> b) where 
-    (<>) = undefined 
+    -- (<>) :: Semigroup b => (a -> b) -> (a -> b) -> a -> b
+    (<>) f g x = f x <> g x
 
 instance Monoid b => Monoid (a -> b) where
-    mempty  = undefined
+    -- mempty :: Monoid b => a -> b
+    mempty _ = mempty
+
+--------------------------------------------------------------------------------
+
+-- The following code illustrates how to work around cases where 
+-- there are multiple possible instances of a particular type class
+-- for a given type. 
+
+data Plus = MkPlus Int
+data Mult = MkMult Int
+
+instance Semigroup Plus where 
+    MkPlus a <> MkPlus b = MkPlus (a + b)
+
+instance Semigroup Mult where 
+    MkMult a <> MkMult b = MkMult (a * b)
 
 --------------------------------------------------------------------------------
