@@ -23,27 +23,26 @@ class Semigroup a where
     (<>) :: a -> a -> a 
 
 instance Semigroup Int where 
-    (<>) = undefined 
+    (<>) x y = x + y
 
 instance Semigroup [a] where 
-    (<>) = undefined 
-
+    (<>) x y = x ++ y
 --------------------------------------------------------------------------------
 -- Monoids
 
 -- Monoid laws:
 --
--- (Left identity)      mempty <> x = x
+-- (Left identity)      mempty <> x = x 
 -- (Right identity)     x <> mempty = x
 
 class Semigroup a => Monoid a where
     mempty :: a
 
 instance Monoid Int where
-    mempty  = undefined
+    mempty = 0
 
 instance Monoid [a] where
-    mempty  = undefined
+    mempty = []
 
 --------------------------------------------------------------------------------
 
